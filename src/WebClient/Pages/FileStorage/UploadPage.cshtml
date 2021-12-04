@@ -1,0 +1,34 @@
+﻿@page "/file-storage/upload"
+@model UploadPageModel
+@{
+    ViewData["Title"] = "Upload new file";
+}
+
+<section>
+    <div class="row">
+
+        <form class="col-8 offset-2" method="post" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-group">
+                <label for="filenameControl">Filename :</label>
+                <input type="text" class="form-control" asp-for="UploadFile.Filename" id="filenameControl"
+                    placeholder="New filename">
+                <span class="text-danger" asp-validation-for="UploadFile.Filename"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="uploadControl">File :</label>
+                <input type="file" class="form-control-file" asp-for="UploadFile.FileInfo" id="uploadControl">
+                <span class="text-danger" asp-validation-for="UploadFile.FileInfo"></span>
+            </div>
+
+            <div class="btn-group d-flex">
+                <a type="button" class="btn btn-secondary col-2 offset-8" asp-area="" asp-page="IndexPage">Back</a>
+                <button type="submit" class="btn btn-success col-2">Upload</button>
+            </div>
+        </form>
+
+    </div>
+</section>

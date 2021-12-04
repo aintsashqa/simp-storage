@@ -1,0 +1,86 @@
+﻿@page "/file-storage"
+@model IndexPageModel
+@{
+    ViewData["Title"] = "File storage";
+}
+
+@section Scripts {
+<script>
+    $(document).ready(() => {
+        const filesTableRows = document
+            .getElementById("files-table")
+            .getElementsByTagName("tr");
+
+        const relocateOnClickHandler = (row) => {
+            return () => {
+                const fileId = row.getElementsByTagName("td")["item-identifier"].innerText;
+                const relocateTo = '@Url.Page("DetailsPage", new { Id = "js-item-identifier" })';
+                location.href = relocateTo.replace("js-item-identifier", fileId);
+            }
+        };
+
+        for (const current of filesTableRows) {
+            current.onclick = relocateOnClickHandler(current);
+        }
+    });
+
+</script>
+}
+
+<section>
+    <div class="row">
+
+        <div class="btn-group col-2 offset-10 p-0" role="group">
+            <a type="button" class="btn btn-primary" asp-area="" asp-page="UploadPage">Upload</a>
+        </div>
+
+        <table class="table mt-3 col-12" id="files-table">
+            <thead class="thead-dark">
+                <tr class="d-flex">
+                    <th hidden></th>
+                    <th class="col">
+                        <a class="text-light" href="?sort=filename">Filename</a>
+                        @if (Model.Sort == "filename")
+                        {
+                            <small><span class="oi oi-arrow-bottom"></span></small>
+                        }
+                    </th>
+                    <th class="col-2">
+                        <a class="text-light" href="?sort=size">Size</a>
+                        @if (Model.Sort == "size")
+                        {
+                            <small><span class="oi oi-arrow-bottom"></span></small>
+                        }
+                    </th>
+                    <th class="col-2">
+                        <a class="text-light" href="?sort=uploaded-at-date">Uploaded at</a>
+                        @if (Model.Sort == "uploaded-at-date")
+                        {
+                            <small><span class="oi oi-arrow-bottom"></span></small>
+                        }
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.FileCollection.Count() == 0)
+                {
+                    <tr class="d-flex">
+                        <th class="col" scope="3">No files uploaded yet</th>
+                    </tr>
+                }
+                @foreach (var item in Model.FileCollection)
+                {
+                    <tr class="d-flex">
+                        <td id="item-identifier" hidden>@item.Id</td>
+                        <td class="col">@item.Filename</td>
+                        <td class="col-2">@item.SizeToString()</td>
+                        <td class="col-2">@item.UploadedAtDate.ToLocalTime().ToString("d")
+                            @item.UploadedAtDate.ToLocalTime().ToString("t")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</section>

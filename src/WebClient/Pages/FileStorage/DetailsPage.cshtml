@@ -1,0 +1,43 @@
+﻿@page "/file-storage/{Id}"
+@model DetailsPageModel
+@{
+    ViewData["Title"] = $"Details {Model.Details.Filename}";
+}
+
+<section>
+    <h1 class="display-3">@Model.Details.Filename</h1>
+
+    <div class="row">
+
+        <div class="col">
+            <table class="table">
+                <tbody>
+
+                    <tr class="d-flex">
+                        <td class="col-3">Filename</td>
+                        <td class="col">@(Model.Details.Filename + Model.Details.Extension)</td>
+                    </tr>
+
+                    <tr class="d-flex">
+                        <td class="col-3">ContentType</td>
+                        <td class="col">@Model.Details.ContentType</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-3">
+            <div class="btn-group-vertical w-100">
+                <a type="button" class="btn btn-secondary" asp-area="" asp-page="IndexPage">Back</a>
+            </div>
+        </div>
+
+        <div class="col-12">
+            @await Component.InvokeAsync("RenderFileContent", new {
+            contentType = Model.Details.ContentType,
+            content = Model.Details.Content })
+        </div>
+
+    </div>
+</section>

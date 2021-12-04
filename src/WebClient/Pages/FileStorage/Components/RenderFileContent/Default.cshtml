@@ -1,0 +1,21 @@
+﻿@model RenderFileContentViewModel
+
+@switch (Model.FileContentType)
+{
+    case FileContentType.Image:
+        <img src="@Model.ShowAsMediaContent()" class="img-fluid img-thumbnail rounded mx-auto d-block" />
+        break;
+
+    case FileContentType.Video:
+        <div class="embed-responsive embed-responsive-16by9">
+            <video class="embed-responsive-item" preload="metadata" controls loop>
+                <source src="@Model.ShowAsMediaContent()" type="@Model.ContentType">
+            </video>
+        </div>
+        break;
+
+    case FileContentType.Unsupported:
+    default:
+        <h6 class="text-center mt-3">File content not supported to preview</h6>
+        break;
+}
